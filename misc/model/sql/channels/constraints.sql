@@ -1,1 +1,1 @@
-ALTER TABLE "Customers"."Xxxxx" ADD CONSTRAINT "xxxXxx" FOREIGN KEY ("xxxXxx") REFERENCES "Customers"."Xxxxx"("id");
+ALTER TABLE "Channels"."Store" ADD CONSTRAINT "discountToApplyToAbandonedCarts" FOREIGN KEY ("discountToApplyToAbandonedCarts") REFERENCES "Marketing"."Discount"("id");

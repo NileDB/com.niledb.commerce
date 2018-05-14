@@ -4,68 +4,56 @@ SET search_path TO "Shipping";
 CREATE TABLE "Shipping"."Origin" (
 	"id" serial PRIMARY KEY,
 	"name" text NOT NULL,
-	"address" int NOT NULL,
-	"shippingZones" int NOT NULL,
+	"address" "Globals"."addressType" NOT NULL,
 	"timestamp" timestamp NOT NULL DEFAULT now()
 );
 
-CREATE TABLE "Shipping"."Zone" (
+CREATE TABLE "Shipping"."Destination" (
 	"id" serial PRIMARY KEY,
-	"name" text NOT NULL,
+	"name" text,
 	"country" int,
-	"provinces" int[],
-	"postalCodes" int NOT NULL,
-	"shippingRates" int NOT NULL,
+	"postalCodes" text[],
 	"timestamp" timestamp NOT NULL DEFAULT now()
 );
 
-CREATE TABLE "Shipping"."Rate" (
+CREATE TABLE "Shipping"."DestinationProvince" (
 	"id" serial PRIMARY KEY,
-	"name" text NOT NULL,
-	"minimumOrderPrice" double precision,
-	"maximumOrderPrice" double precision,
-	"minimumOrderWeight" double precision,
-	"maximumOrderWeight" double precision,
-	"rate" double precision,
-	"freeShippingRate" boolean NOT NULL,
-	"disabled" boolean,
+	"destination" int NOT NULL,
+	"province" int NOT NULL,
 	"timestamp" timestamp NOT NULL DEFAULT now()
 );
 
 CREATE TABLE "Shipping"."Package" (
 	"id" serial PRIMARY KEY,
-	"name" text NOT NULL,
+	"name" text,
 	"type" "Shipping"."packageType",
 	"conditionType" "Shipping"."packageConditionType",
 	"dimensions" "Globals"."dimensionsType",
 	"weight" "Globals"."weightType",
-	"defaultPackageForShippingRates" boolean,
+	"defaultPackageForShippingRates" boolean NOT NULL DEFAULT false,
 	"timestamp" timestamp NOT NULL DEFAULT now()
 );
 
-CREATE TABLE "Orders"."Carrier" (
+CREATE TABLE "Shipping"."Rate" (
+	"id" serial PRIMARY KEY,
+	"name" text,
+	"origin" int,
+	"destination" int,
+	"package" int,
+	"minimumOrderPrice" double precision,
+	"maximumOrderPrice" double precision,
+	"minimumOrderWeight" double precision,
+	"maximumOrderWeight" double precision,
+	"rate" double precision,
+	"freeShippingRate" boolean NOT NULL DEFAULT false,
+	"timestamp" timestamp NOT NULL DEFAULT now()
+);
+
+CREATE TABLE "Shipping"."Carrier" (
 	"id" serial PRIMARY KEY, 
-	"name" text NOT NULL
+	"name" text NOT NULL,
+	"timestamp" timestamp NOT NULL DEFAULT now()
 );
 
-CREATE UNIQUE INDEX ON "Orders"."Carrier"("name");
+CREATE UNIQUE INDEX ON "Shipping"."Carrier"("name");
 
-CREATE TABLE "Orders"."CarrierAgent" (
-	"id" serial PRIMARY KEY,
-	"carrier" int NOT NULL,
-	"username" text NOT NULL,
-	"firstName" text NOT NULL,
-	"lastName" text NOT NULL,
-	"phone" text
-);
-
-CREATE UNIQUE INDEX ON "Orders"."CarrierAgent"("username");
-
-CREATE TABLE "Orders"."CarrierAgentLocation" (
-	"id" serial PRIMARY KEY,
-	"carrierAgent" int NOT NULL,
-	"timestamp" timestamp NOT NULL DEFAULT now(),
-	"location" point
-);
-
-CREATE UNIQUE INDEX ON "Orders"."CarrierAgentLocation"("carrierAgent", "timestamp");

@@ -3,54 +3,63 @@ SET search_path TO "Products";
 
 CREATE TABLE "Products"."Item" (
 	"id" serial PRIMARY KEY,
-	"title" text NOT NULL,
-	"description" text NOT NULL,
-	"salePrice" money NOT NULL,
-	"originalPrice" money NOT NULL,
-	"chargeTaxes" boolean NOT NULL,
-	"tax" int NOT NULL,
-	"trackInventory" boolean NOT NULL,
-	"inventory" int NOT NULL,
-	"images" text NOT NULL,
-	"weight" text NOT NULL,
+	"name" text NOT NULL,
+	"description" text,
+	"salePrice" money,
+	"originalPrice" money,
+	"chargeTaxes" boolean NOT NULL DEFAULT true,
+	"tax" int,
+	"trackInventory" boolean NOT NULL DEFAULT true,
+	"stock" int,
+	"weight" "Globals"."weightType",
+	"packageWeight" "Globals"."weightType",
+	"dimensions" "Globals"."dimensionsType",
+	"packageDimensions" "Globals"."dimensionsType",
 	"fulfillmentService" "Products"."fulfillmentServiceType",
-	"shippingRequired" boolean NOT NULL,
+	"shippingRequired" boolean NOT NULL DEFAULT true,
 	"downloadLink" text,
-	"tags" text NOT NULL,
-	"seller" text NOT NULL,
-	"collections" text NOT NULL,
-	"seoTitle" text NOT NULL,
-	"seoDescription" text NOT NULL,
+	"tags" text[],
+	"seller" text,
+	"collections" text,
+	"seoTitle" text,
+	"seoDescription" text,
 	"timestamp" timestamp NOT NULL DEFAULT now()
 );
 
-CREATE TABLE "Products"."ItemVariant" (
+CREATE TABLE "Products"."ItemImage" (
 	"id" serial PRIMARY KEY,
 	"item" int NOT NULL,
-	"size" text NOT NULL,						-- Create custom types with attributes
-	"color" text NOT NULL,						-- Create custom types with attributes
-	"style" text NOT NULL,						-- Create custom types with attributes
-	"weight" text NOT NULL,						-- Create custom types with attributes
-	"finish" text NOT NULL,						-- Create custom types with attributes
-	"material" text NOT NULL,						-- Create custom types with attributes
-	"sku" text NOT NULL,
-	"barcode" text NOT NULL,
-	"salePrice" text NOT NULL,
-	"originalPrice" text NOT NULL,
-	"inventory" text NOT NULL,
-	"tags" text NOT NULL,
-	"notifyOnLowStockLevel" int NOT NULL,
-	"allowPurchaseWithoutStock" text NOT NULL,
-	"wssiEnabled" boolean NOT NULL,
-	"location" point,
+	"image" int NOT NULL,
+	"isDefaultImage" boolean NOT NULL DEFAULT false,
 	"timestamp" timestamp NOT NULL DEFAULT now()
 );
 
-CREATE TABLE "Products"."ItemImage" (				-- Casi mejor reutilizar las imágenes
+CREATE TABLE "Products"."Variant" (
 	"id" serial PRIMARY KEY,
-	"title" text NOT NULL,
-	"image" text NOT NULL,
-	"addWatermark" boolean NOT NULL,
+	"item" int NOT NULL,
+	"gtin13" text,
+	"size" text,						-- Create custom types with attributes
+	"color" text,						-- Create custom types with attributes
+	"description" text,
+	"salePrice" money,
+	"originalPrice" money,
+	"stock" int,
+	"weight" "Globals"."weightType",
+	"packageWeight" "Globals"."weightType",
+	"dimensions" "Globals"."dimensionsType",
+	"packageDimensions" "Globals"."dimensionsType",
+	"tags" text[],
+	"notifyOnLowStockLevel" int,
+	"allowPurchaseWithoutStock" boolean NOT NULL DEFAULT false,
+	"wssiEnabled" boolean NOT NULL DEFAULT false,
+	"timestamp" timestamp NOT NULL DEFAULT now()
+);
+
+CREATE TABLE "Products"."VariantImage" (
+	"id" serial PRIMARY KEY,
+	"variant" int NOT NULL,
+	"image" int NOT NULL,
+	"isDefaultImage" boolean NOT NULL DEFAULT false,
 	"timestamp" timestamp NOT NULL DEFAULT now()
 );
 
@@ -58,38 +67,69 @@ CREATE TABLE "Products"."InventoryAdjustment" (
 	"id" serial PRIMARY KEY,
 	"variant" int NOT NULL,
 	"adjustment" int NOT NULL,
-	"event" text NOT NULL,
+	"reason" text,
 	"timestamp" timestamp NOT NULL DEFAULT now()
 );
 
-CREATE TABLE "Products"."ItemCollection" (
+CREATE TABLE "Products"."Collection" (
 	"id" serial PRIMARY KEY,
-	"title" text NOT NULL,
-	"image" text NOT NULL,
-	"type" "Products"."itemCollectionType" NOT NULL,
-	"condition" text NOT NULL,				-- It is like GraphQL where
-	"items" text NOT NULL,
+	"name" text NOT NULL,
+	"image" int,
+	"tax" int,
+	"type" "Products"."itemCollectionType",
+	"condition" text,										-- It is like GraphQL where
 	"timestamp" timestamp NOT NULL DEFAULT now()
 );
 
-CREATE TABLE "Products"."CollectionPublication" (
+CREATE TABLE "Products"."CollectionItem" (
 	"id" serial PRIMARY KEY,
-	"itemCollection" int NOT NULL,
-	"channels" int NOT NULL,
-	"date" date NOT NULL,
+	"collection" int NOT NULL,
+	"item" int NOT NULL,
+	"timestamp" timestamp NOT NULL DEFAULT now()
+);
+
+CREATE TABLE "Products"."Hierarchy" (
+	"id" serial PRIMARY KEY,
+	"name" text NOT NULL,
+	"parent" int,
+	"timestamp" timestamp NOT NULL DEFAULT now()
+);
+
+CREATE TABLE "Products"."HierarchyCollection" (
+	"id" serial PRIMARY KEY,
+	"hierarchy" int NOT NULL,
+	"collection" int NOT NULL,
+	"timestamp" timestamp NOT NULL DEFAULT now()
+);
+
+CREATE TABLE "Products"."Publication" (
+	"id" serial PRIMARY KEY,
+	"collection" int NOT NULL,
+	"channels" "Channels"."saleChannelType"[],
+	"publishedFrom" timestamp,
+	"publishedUntil" timestamp,
 	"timestamp" timestamp NOT NULL DEFAULT now()
 );
 
 CREATE TABLE "Products"."GiftCard" (
 	"id" serial PRIMARY KEY,
-	"code" text NOT NULL,				-- i.e. 33FA 883F 2A22 88FA
-	"initialValue" double precision NOT NULL,
-	"balance" double precision NOT NULL,
-	"orders" int NOT NULL,
-	"status" "Products"."giftCardStatusType" NOT NULL,
-	"issueDate" date NOT NULL,
-	"comments" text NOT NULL,
-	"expirationDate" date NOT NULL,
-	"customer" int NOT NULL,
+	"code" text,				-- i.e. 33FA 883F 2A22 88FA
+	"initialValue" double precision,
+	"balance" double precision,
+	"status" "Products"."giftCardStatusType",
+	"issueDate" date,
+	"comments" text,
+	"expirationDate" date,
+	"customer" int,
+	"timestamp" timestamp NOT NULL DEFAULT now()
+);
+
+CREATE TABLE "Products"."Review" (
+	"id" serial PRIMARY KEY,
+	"item" int NOT NULL,
+	"customer" int,
+	"review" text,
+	"rating" int NOT NULL,
+	"orderLine" int,
 	"timestamp" timestamp NOT NULL DEFAULT now()
 );

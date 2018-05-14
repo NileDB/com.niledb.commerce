@@ -18,3 +18,11 @@ CREATE TYPE "Channels"."saleChannelType" AS ENUM (
 	'Chatbots', 
 	'Messengers' 
 );
+
+CREATE TYPE "Channels"."storeStatusType" AS ENUM (
+	'Disabled',
+	'Enabled',
+	'Maintenance'
+);
+
+CREATE DOMAIN "Channels"."requiredStoreStatusDomain" "Channels"."storeStatusType" NOT NULL;

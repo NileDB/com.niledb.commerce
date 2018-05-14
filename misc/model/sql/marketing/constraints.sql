@@ -1,1 +1,12 @@
-ALTER TABLE "Customers"."Xxxxx" ADD CONSTRAINT "xxxXxx" FOREIGN KEY ("xxxXxx") REFERENCES "Customers"."Xxxxx"("id");
+ALTER TABLE "Marketing"."DiscountUsage" ADD CONSTRAINT "discount" FOREIGN KEY ("discount") REFERENCES "Marketing"."Discount"("id");
+ALTER TABLE "Marketing"."DiscountUsage" ADD CONSTRAINT "order" FOREIGN KEY ("order") REFERENCES "Orders"."Order"("id");
+ALTER TABLE "Marketing"."DiscountItem" ADD CONSTRAINT "discount" FOREIGN KEY ("discount") REFERENCES "Marketing"."Discount"("id");
+ALTER TABLE "Marketing"."DiscountItem" ADD CONSTRAINT "item" FOREIGN KEY ("item") REFERENCES "Products"."Item"("id");
+ALTER TABLE "Marketing"."DiscountVariant" ADD CONSTRAINT "discount" FOREIGN KEY ("discount") REFERENCES "Marketing"."Discount"("id");
+ALTER TABLE "Marketing"."DiscountVariant" ADD CONSTRAINT "variant" FOREIGN KEY ("variant") REFERENCES "Products"."Variant"("id");
+ALTER TABLE "Marketing"."DiscountCollection" ADD CONSTRAINT "discount" FOREIGN KEY ("discount") REFERENCES "Marketing"."Discount"("id");
+ALTER TABLE "Marketing"."DiscountCollection" ADD CONSTRAINT "collection" FOREIGN KEY ("collection") REFERENCES "Products"."Collection"("id");
+ALTER TABLE "Marketing"."DiscountCustomer" ADD CONSTRAINT "discount" FOREIGN KEY ("discount") REFERENCES "Marketing"."Discount"("id");
+ALTER TABLE "Marketing"."DiscountCustomer" ADD CONSTRAINT "customer" FOREIGN KEY ("customer") REFERENCES "Customers"."Customer"("id");
+ALTER TABLE "Marketing"."DiscountGroup" ADD CONSTRAINT "discount" FOREIGN KEY ("discount") REFERENCES "Marketing"."Discount"("id");
+ALTER TABLE "Marketing"."DiscountGroup" ADD CONSTRAINT "group" FOREIGN KEY ("group") REFERENCES "Customers"."Group"("id");
