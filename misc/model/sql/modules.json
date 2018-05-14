@@ -1,0 +1,11 @@
+{
+	"channels": true,
+	"customers": true,
+	"globals": true,
+	"marketing": true,
+	"orders": true,
+	"payments": true,
+	"products": true,
+	"shipping": true,
+	"taxes": true
+}
