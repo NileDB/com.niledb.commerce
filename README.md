@@ -8,9 +8,9 @@ Welcome to [NileDB](https://niledb.com) Commerce Backend, an open-source, fully 
 
 ### Data Model
 
-![NileDB Commerce Backend Data Model](NileDB Commerce Backend.png)
+![NileDB Commerce Backend Data Model]("NileDB Commerce Backend.png")
 
-![NileDB Commerce Backend Data Model Poster](NileDB Commerce Backend.pdf)
+![NileDB Commerce Backend Data Model Poster]("NileDB Commerce Backend.pdf")
 
 ### Quick Start
 
