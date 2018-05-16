@@ -35,8 +35,8 @@ CREATE TABLE "Customers"."Timeline" (
 
 CREATE TABLE "Customers"."GroupCustomer" (
 	"id" serial PRIMARY KEY,
-	"group" "Customers"."Group" NOT NULL,
-	"customer" "Customers"."Customer" NOT NULL,
+	"group" int NOT NULL,
+	"customer" int NOT NULL,
 	"timestamp" timestamp NOT NULL DEFAULT now()
 );
 
