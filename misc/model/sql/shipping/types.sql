@@ -16,8 +16,8 @@ CREATE TYPE "Shipping"."packageConditionType" AS ENUM (
 CREATE TYPE "Shipping"."packageType" AS ENUM (
 	'Box',
 	'Envelope',
-	'Soft package',
-	'Carrier-supplied packaging'
+	'SoftPackage',
+	'CarrierSuppliedPackaging'
 );
 
 CREATE TYPE "Shipping"."shippingMethodType" AS ENUM (

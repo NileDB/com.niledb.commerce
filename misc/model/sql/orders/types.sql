@@ -10,17 +10,17 @@ CREATE TYPE "Orders"."financialStatusType" AS ENUM (
 
 CREATE TYPE "Orders"."paymentMethodType" AS ENUM (
 	'Cash',
-	'Gift card',
-	'Store credit',
-	'External credit',
-	'External debit',
-	'Bank transfer'
+	'GiftCard',
+	'StoreCredit',
+	'ExternalCredit',
+	'ExternalDebit',
+	'BankTransfer'
 );
 
 CREATE TYPE "Orders"."cardType" AS ENUM (
 	'Visa',
 	'Mastercard',
-	'American Express',
+	'AmericanExpress',
 	'Discover'
 );
 
