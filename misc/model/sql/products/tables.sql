@@ -5,8 +5,8 @@ CREATE TABLE "Products"."Item" (
 	"id" serial PRIMARY KEY,
 	"name" text NOT NULL,
 	"description" text,
-	"salePrice" money,
-	"originalPrice" money,
+	"salePrice" double precision,
+	"originalPrice" double precision,
 	"chargeTaxes" boolean NOT NULL DEFAULT true,
 	"tax" int,
 	"trackInventory" boolean NOT NULL DEFAULT true,
@@ -41,8 +41,8 @@ CREATE TABLE "Products"."Variant" (
 	"size" text,						-- Create custom types with attributes
 	"color" text,						-- Create custom types with attributes
 	"description" text,
-	"salePrice" money,
-	"originalPrice" money,
+	"salePrice" double precision,
+	"originalPrice" double precision,
 	"stock" int,
 	"weight" "Globals"."weightType",
 	"packageWeight" "Globals"."weightType",

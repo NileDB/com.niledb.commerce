@@ -22,7 +22,7 @@ CREATE TABLE "Globals"."Image" (
 	"id" serial PRIMARY KEY,
 	"name" text,
 	"image" bytea NOT NULL,
-	"labels" text,
+	"labels" text[],
 	"addWatermark" boolean NOT NULL DEFAULT false,
 	"mimeType" text,
 	"timestamp" timestamp NOT NULL DEFAULT now()
